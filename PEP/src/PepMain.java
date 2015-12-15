@@ -38,7 +38,7 @@ public class PepMain extends JFrame{
     	
     	
     	
-    	frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+    	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     	frame.add(container);
     	
     

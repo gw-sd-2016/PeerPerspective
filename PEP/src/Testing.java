@@ -10,16 +10,16 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -28,42 +28,36 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 
 public class Testing extends JPanel{
 	
-	private double[] real_coordinates; 
-	
+	private ArrayList<Point2D> coordinates = EyeTrackerConnect.coordinates;
 	private JPanel container;
-	private JTextArea textArea;
+	private JTextArea txtrX;
 	private JLabel textLabel;
 	private JButton b_start;
 	private JButton b_done;
 	private String readText;
+	private ArrayList<String> prob = SearchQuery.search.output_text;
 	
-	private String[] wordArray;
-	private int[][] wordInfo;
-	/*x,y,width,focuscount*/
-	private int state;
-	private int wordCount;
-	
+	private String[] conceptArray;
+	private int[][] problemInfo;
+
+	private int charCount;
+	private int state;	
 	/* 0 = start
 	 * 1 = reading
-	 * 2 = view results
 	 */
 	
-	private static final int GAMEHEIGHT =800;
-	private static final int GAMEWIDTH = 800;
+	private static final int HEIGHT =800;
+	private static final int WIDTH = 800;
 	private final int BUTTON_WIDTH = 150;
 	private final int BUTTON_HEIGHT = 30;
 	private final int X_MARGIN = 50;
 	private final int Y_START = 50;
 	private final int FONTSIZE = 22;
-	
-	private final int TEXT_WIDTH = 300;
-	private final int TEXT_HEIGHT = 400;
-	
+		
 	final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
@@ -74,8 +68,6 @@ public class Testing extends JPanel{
 		container = cont;
 		
 		state = 0;
-		
-		real_coordinates = new double[2];
 		
 		//EyeTrackerConnect.running = true;
 		//ConnectEyeTracker.runEyeTracker();
@@ -91,15 +83,19 @@ public class Testing extends JPanel{
     	container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
     	
 		
-		textArea = new JTextArea(20,80);
-		textArea.setLineWrap(true);
-		textArea.setBounds(162, 100, 500,400);
-        textArea.setVisible(true);
+		txtrX = new JTextArea(20,80);
+		//txtrX.setText(prob.get(0));
+		txtrX.setText(""+prob.get(2)+"\r\n\r\n");
+			
+		//txtrX.setText("1)x^4+4\r\n\r\n2)(x^4+4)+(4x^2-4x^2)\r\n\r\n3)(x^4+4x^2+4)-4x^2\r\n\r\n\r\nTRUE/FALSE:\r\n\r\n(x^2)^2+4x^2+4-4x^2");
+		txtrX.setLineWrap(true);
+		txtrX.setBounds(162, 100, 500,400);
+        txtrX.setVisible(true);
        
-        textLabel = new JLabel("Enter some concept to practice:");
+        textLabel = new JLabel("<html>Please click \"Begin Test\" to have the eye tracker start recording. Based on the steps shown is the following statement true or false. \r\nPress T for TRUE and F for FALSE</html>");
         textLabel.setVisible(true);
         System.out.println(textLabel.getWidth());
-        textLabel.setBounds(340, 50, 254,30);
+        textLabel.setBounds(162, 28, 430,50);
         
         
         b_start = new JButton("Begin Test");
@@ -109,8 +105,8 @@ public class Testing extends JPanel{
         	public void actionPerformed(ActionEvent e) {
         		state = 1;
         		
-        		readText = textArea.getText();
-        		textArea.setVisible(false);
+        		readText = txtrX.getText();
+        		txtrX.setVisible(false);
         		textLabel.setVisible(false);
         		b_start.setVisible(false);
         		displayString();
@@ -118,18 +114,11 @@ public class Testing extends JPanel{
         		
         	}
         });
-		/*
-		fileNameLabel = new JLabel ();
-		fileNameLabel.setText("save to filename:");
-        fileNameLabel.setFont(new Font("Calibri", Font.PLAIN, 18));
-        
-		fileNameBox = new JTextField(8);
-		fileNameBox.setText("read_data.csv");
-		*/
+		
 		
 		b_done = new JButton("Done");
         b_done.setPreferredSize(new Dimension (BUTTON_WIDTH,BUTTON_HEIGHT));
-		b_done.setBounds(GAMEWIDTH/2-BUTTON_WIDTH/2, GAMEHEIGHT-50, BUTTON_WIDTH,BUTTON_HEIGHT);
+		b_done.setBounds(WIDTH/2-BUTTON_WIDTH/2, HEIGHT-50, BUTTON_WIDTH,BUTTON_HEIGHT);
 		b_done.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		writeToFile();
@@ -140,8 +129,9 @@ public class Testing extends JPanel{
         		setVisible(false);
         		
         		/*testing*/
-        		for (int i = 0; i <wordArray.length; i++){
-        			System.out.println(wordArray[i] + " " + wordInfo[i][3]);
+        		for (int i = 0; i <conceptArray.length; i++){
+        			System.out.println("efe");
+        			System.out.println(conceptArray[i] + " " + problemInfo[i][3]);
         		}
         		
         		
@@ -151,40 +141,48 @@ public class Testing extends JPanel{
 		
         this.setVisible(true);
         
-        //container.add(textLabel);
-        //container.add(textArea);
-        //container.add(b_start);
+     
         
         add(textLabel);
-        add(textArea);
+        add(txtrX);
         add(b_start);
         add(b_done);
         
 	}
+	 void drawSpaceString(Graphics g, String text, int x, int y) {
+	    for (String line : text.split("\\s+"))
+	      drawSpaceString(g, line, x+= g.getFontMetrics().getHeight(), y);
+	}
+	void drawNewlineString(Graphics g, String text, int x, int y) {
+	    for (String line : text.split("\n"))
+	      g.drawString(line, x, y += g.getFontMetrics().getHeight());
+	}
+	
+	
 	
 	private void displayString() {
-		wordCount = getWordCount();
-		System.out.println(wordCount);
-		initWordArray(wordCount);
-		fillWordCoordinates(wordArray);
+		charCount = getCharCount();
+		System.out.println(charCount);
+		initconceptArray(charCount);
+		fillCoordinates(conceptArray);
 		
 		repaint();
 		b_done.setVisible(true);
 	}
 	
-	private int getWordCount() {
+	private int getCharCount() {
 		if (readText.length() == 0) return 0;
-		int wordCount = 1;
-		/*wordcount starts at one because of the first word not having a space in front*/
+		int charCount = 1;
+		/*charCount starts at one because of the first word not having a space in front counts all the characters in the test*/
 		for (int i = 0; i<readText.length(); i++) {
 			if(readText.charAt(i) == ' ') {
-				wordCount++;
+				charCount++;
 			}
 		}
-		return wordCount;
+		return charCount;
 	}
 	
-	private void initWordArray(int size) {
+	private void initconceptArray(int size) {
 		/* if empty string error message*/
 		if (size == 0) {
 			JOptionPane.showMessageDialog(null, "Please Enter Some Text", "Error",
@@ -194,74 +192,59 @@ public class Testing extends JPanel{
     		setVisible(false);
 		}
 		int index = 0;
-		wordArray = new String[size];
+		conceptArray = new String[size];
 		int start = 0;
 		for (int end = 0; end<readText.length(); end++) {
 			if (readText.charAt(end) == ' ') {
 				
-				wordArray[index] = readText.substring(start,end);
+				conceptArray[index] = readText.substring(start,end);
 				start = end+1;
 				index++;
 			}
-			wordArray[index] = readText.substring(start);
+			conceptArray[index] = readText.substring(start);
 		}
 		//System.out.println(readText);
 		String arrayString;
-		arrayString = Arrays.toString(wordArray);
+		arrayString = Arrays.toString(conceptArray);
 		System.out.println(arrayString);
 	}
 	
-	private void fillWordCoordinates(String[] words) {
+	private void fillCoordinates(String[] words) {
 		//int cols = 8;
 		int xCoord = X_MARGIN;
 		int yCoord = Y_START;
 		FontMetrics metrics = this.getGraphics().getFontMetrics(new Font("Calibri", Font.PLAIN, FONTSIZE));
 		
-		//System.out.println(metrics.stringWidth(" "));
-		wordInfo = new int[words.length][4];
+		problemInfo = new int[words.length][4];
 		
 		/*get width of the words in array*/
-		for (int i = 0; i<wordInfo.length;i++) {
-			wordInfo[i][0] = xCoord;
-			wordInfo[i][1] = yCoord;
-			wordInfo[i][2] = metrics.stringWidth(words[i]);
+		for (int i = 0; i<problemInfo.length;i++) {
+			problemInfo[i][0] = xCoord;
+			problemInfo[i][1] = yCoord;
+			problemInfo[i][2] = metrics.stringWidth(words[i]);
 			xCoord += metrics.stringWidth(words[i]) + metrics.stringWidth(" ");
-			if (xCoord + metrics.stringWidth(words[i]) > GAMEWIDTH - X_MARGIN) {
-				wordInfo[i][0] = X_MARGIN;
-				wordInfo[i][1] = yCoord + FONTSIZE;
+			if (xCoord + metrics.stringWidth(words[i]) > WIDTH - X_MARGIN) {
+				problemInfo[i][0] = X_MARGIN;
+				problemInfo[i][1] = yCoord + FONTSIZE;
 				xCoord = X_MARGIN + metrics.stringWidth(words[i]) + metrics.stringWidth(" ");
 				yCoord += FONTSIZE;
 			}
-			System.out.println(words[i] + " " + wordInfo[i][0]+ " " + wordInfo[i][1]+ " " + wordInfo[i][2]);
+			System.out.println(words[i] + " " + problemInfo[i][0]+ " " + problemInfo[i][1]+ " " + problemInfo[i][2]);
 		}
-		
-		/*
-		int rows = wordCoordinates.length/cols +1;
-		for (int i = 0; i< wordCoordinates.length;i++){
-			wordCoordinates[i][0] = i%10*(GAMEWIDTH/cols);
-			wordCoordinates[i][1] = 20*(i/10+1);
-		}
-		*/
 		
 	}
 	
 	protected void paintComponent(Graphics g) {
-		//System.out.println("this should loop");
 		g.setColor(Color.black);
-		//System.out.println(Globals.coordinates[0] + " "+Globals.coordinates[1]);
 		super.paintComponent(g);
-		if (state == 1 && wordCount!= 0) {
+		if (state == 1 && charCount!= 0) {
 			g.setFont(new Font("Calibri", Font.PLAIN, 32));
-			//System.out.println("fuck you loop damn it");
-			//g.drawString(""+timer.getTime(),GAMEWIDTH/2 , GAMEHEIGHT-100);
-			for (int i = 0; i<wordArray.length;i++) {
-				//System.out.println(wordArray[i]+" "+wordCoordinates[i][0]+" "+wordCoordinates[i][1]);
+			for (int i = 0; i<conceptArray.length;i++) {
+				
 	        	g.setFont(new Font("Calibri", Font.PLAIN, FONTSIZE));
-				g.drawString(wordArray[i], wordInfo[i][0], wordInfo[i][1]);
+				drawNewlineString(g, conceptArray[i], problemInfo[i][0], problemInfo[i][1]);
 			}
-			//System.out.println("state = "+ state);
-			//fileNameLabel.setVisible(true);
-			//fileNameBox.setVisible(true);
+			
 			b_done.setVisible(true);
 			
 		}
@@ -270,22 +253,17 @@ public class Testing extends JPanel{
 		repaint();
 	}
 	
-	/*private void calcWordViewed() {
-		//System.out.println(Arrays.toString(ConnectEyeTracker.getCoordinates()));
+	private void calcWordViewed() {
 		
-		real_coordinates[0] = (Globals.coordinates[0] *Globals.sWidth) - ((Globals.sWidth-GAMEWIDTH)/2);
-		real_coordinates[1] = Globals.coordinates[1] * Globals.sHeight;
-		
-		//System.out.println(real_coordinates[0] +" " + real_coordinates[1]);
-		//if eye fixation point is within bounds of a word add to the counter for that word
-		for (int i = 0; i< wordInfo.length ;i++) {
-			if (real_coordinates[0] > wordInfo[i][0] && real_coordinates[0] < wordInfo[i][0] + wordInfo[i][2] &&
-					real_coordinates[1] < wordInfo[i][1] && real_coordinates[1] > wordInfo[i][1] - FONTSIZE) {
-				wordInfo[i][3]++;
+		/*if eye fixation point is within bounds of a word add to the counter for that word*/
+		for (int i = 0; i< problemInfo.length ;i++) {
+			if (coordinates.get(0).getX() > problemInfo[i][0] && coordinates.get(0).getY() < problemInfo[i][0] + problemInfo[i][2] &&
+					coordinates.get(1).getX() < problemInfo[i][1] && coordinates.get(1).getY() > problemInfo[i][1] - FONTSIZE) {
+				problemInfo[i][3]++;
 			}
 		}
 	}
-	*/
+	
 	private void writeToFile() {
 		try{
 			File file = new File("read_data.csv");
@@ -301,9 +279,9 @@ public class Testing extends JPanel{
 			bw.newLine();
 			bw.write("word,seconds of focus,x,y");
 			bw.newLine();
-			for (int i = 0; i <wordInfo.length; i++) {
+			for (int i = 0; i <problemInfo.length; i++) {
 				
-				String tempWord = wordArray[i];
+				String tempWord = conceptArray[i];
 				if (tempWord.charAt(tempWord.length()-1) == ',') {
 					tempWord = tempWord.substring(0,tempWord.length()-1);
 				}
@@ -311,7 +289,7 @@ public class Testing extends JPanel{
 				
 				String line = tempWord+ ",";
 				
-				line = line.concat(""+(double)wordInfo[i][3]/1000+","+wordInfo[i][0]+","+wordInfo[i][1]);
+				line = line.concat(""+(double)problemInfo[i][3]/1000+","+problemInfo[i][0]+","+problemInfo[i][1]);
 				
 				bw.write(line);
 				bw.newLine();
@@ -326,11 +304,19 @@ public class Testing extends JPanel{
 }
 
 /*Testing
-1) A=B                     2)B=C                       3)A=C
+Evaluate x^2+2 (x+7)-19 where x = 7
+(x - 1)(x + 3)^2 + 7 where x = 2
 
 
-Dogs are big. Things that are big are furry. 
+
+
+
+1) x^4 + 4                     2)(x^4 + 4)+(4x^2 - 4x^2)                       3) (x^4 + 4x^2 + 4) - 4x^2
+
+
+(x^6 + 6)+(6x^2 - 6x^2)
+
 
 True or False 
-Dogs are furry.
+
 */

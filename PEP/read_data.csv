@@ -1,0 +1,409 @@
+Begin test date: 2015/11/03 09:17:48
+word,seconds of focus,x,y
+fwefwfwgerg,0.0,50,50
+Begin test date: 2015/11/03 09:21:26
+word,seconds of focus,x,y
+ewfwef,0.0,50,50
+Begin test date: 2015/11/03 09:22:00
+word,seconds of focus,x,y
+gergeg,0.0,50,50
+Begin test date: 2015/11/03 09:22:35
+word,seconds of focus,x,y
+efwfwfwf,0.0,50,50
+Begin test date: 2015/11/03 12:50:14
+word,seconds of focus,x,y
+jjofwjejfowjo,0.0,50,50
+Begin test date: 2015/11/17 11:28:40
+word,seconds of focus,x,y
+,0.0,50,50
+Begin test date: 2015/11/18 09:02:38
+word,seconds of focus,x,y
+dbfbdb,0.0,50,50
+Begin test date: 2015/11/18 10:30:42
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2)
+
+
+,0.0,162,94
+Begin test date: 2015/11/18 10:30:56
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TrueorFalse:
+
+
+(x^6,0.0,50,72
++,0.0,674,72
+6)+(6x^2-6x^2)
+
+
+,0.0,50,94
+Begin test date: 2015/11/18 10:31:09
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+
+(x^6+6)+(6x^2-6x^2)
+
+
+,0.0,50,94
+Begin test date: 2015/11/18 10:35:35
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2)
+
+
+,0.0,162,94
+Begin test date: 2015/11/18 10:42:41
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 10:42:53
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 10:43:06
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TrueorFalse:
+
+(x^6,0.0,50,72
++,0.0,674,72
+6)+(6x^2-6x^2),0.0,50,94
+Begin test date: 2015/11/18 10:43:22
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6+6)+(6x^2-6x^2),0.0,50,94
+Begin test date: 2015/11/18 10:43:34
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TrueorFalse:
+
+(x^6+6)+(6x^2-6x^2),0.0,50,72
+Begin test date: 2015/11/18 10:51:27
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 10:51:33
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 10:54:12
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 10:55:14
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 10:55:24
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 11:21:50
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+True,0.0,50,72
+or,0.0,563,72
+False:
+
+(x^6,0.0,50,94
++,0.0,146,94
+6)+(6x^2-6x^2),0.0,162,94
+Begin test date: 2015/11/18 11:57:25
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TrueorFalse:
+
+(x^6+6)+(6x^2-6x^2),0.0,50,72
+Begin test date: 2015/11/18 11:58:48
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^6+6)+(6x^2-6x^2),0.0,50,72
+Begin test date: 2015/11/18 13:35:32
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^6+6)+(6x^2-6x^2),0.0,50,72
+Begin test date: 2015/11/18 13:36:26
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^6+6)+(6x^2-6x^2),0.0,50,72
+Begin test date: 2015/11/18 14:16:01
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^6+6)+(6x^2-6x^2),0.0,50,72
+Begin test date: 2015/11/18 14:45:08
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^2)^2+4x^2+4-4x^2,0.0,50,72
+Begin test date: 2015/11/18 14:46:10
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^2)^2+4x^2+4-4x^2,0.0,50,72
+Begin test date: 2015/11/18 14:48:29
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^2)^2+4x^2+4-4x^2,0.0,50,72
+Begin test date: 2015/11/18 14:53:29
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^2)^2+4x^2+4-4x^2,0.0,50,72
+Begin test date: 2015/12/08 23:05:35
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^2)^2+4x^2+4-4x^2,0.0,50,72
+Begin test date: 2015/12/08 23:06:00
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^2)^2+4x^2+4-4x^2,0.0,50,72
+Begin test date: 2015/12/08 23:31:48
+word,seconds of focus,x,y
+1)x^4+4
+
+2)(x^4+4)+(4x^2-4x^2)
+
+3)(x^4+4x^2+4)-4x^2
+
+
+TRUE/FALSE:
+
+(x^2)^2+4x^2+4-4x^2,0.0,50,72

@@ -28,6 +28,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 
 public class Testing extends JPanel{
@@ -61,6 +64,7 @@ public class Testing extends JPanel{
 	final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
+    private JLabel lblNewLabel;
     
 	public Testing(JPanel cont) {
 	
@@ -99,18 +103,26 @@ public class Testing extends JPanel{
         textLabel.setBounds(162, 28, 430,50);
         
         
-        b_start = new JButton("Algebra");
+        b_start = new JButton("Polynomials");
         b_start.setPreferredSize(new Dimension (BUTTON_WIDTH,BUTTON_HEIGHT));
 		b_start.setBounds(162, 128, BUTTON_WIDTH,BUTTON_HEIGHT);
 		b_start.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		state = 1;
-        		
+                try {
+                	ProblemMenu app = new ProblemMenu();
+                	//container.add(new Probl(container));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                setVisible(false);
+                   		
         		//readText = txtrX.getText();
         		//txtrX.setVisible(false);
         		textLabel.setVisible(false);
         		b_start.setVisible(false);
-        		displayString();
+        		//displayString();
         		
         		
         	}
@@ -142,9 +154,14 @@ public class Testing extends JPanel{
      
         
         add(textLabel);
-        add(txtrX);
         add(b_start);
         add(b_done);
+        
+        lblNewLabel = new JLabel("Algebra Topics");
+        lblNewLabel.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel.setBounds(162, 89, 150, 28);
+        add(lblNewLabel);
         
 	}
 	 void drawSpaceString(Graphics g, String text, int x, int y) {
@@ -158,7 +175,7 @@ public class Testing extends JPanel{
 	
 	
 	
-	private void displayString() {
+	/*private void displayString() {
 		charCount = getCharCount();
 		System.out.println(charCount);
 		initconceptArray(charCount);
@@ -166,11 +183,11 @@ public class Testing extends JPanel{
 		repaint();
 		b_done.setVisible(true);
 	}
-	
-	private int getCharCount() {
+	*/
+	/*private int getCharCount() {
 		if (readText.length() == 0) return 0;
 		int charCount = 1;
-		/*charCount starts at one because of the first word not having a space in front counts all the characters in the test*/
+		//charCount starts at one because of the first word not having a space in front counts all the characters in the test
 		for (int i = 0; i<readText.length(); i++) {
 			if(readText.charAt(i) == ' ') {
 				charCount++;
@@ -178,9 +195,9 @@ public class Testing extends JPanel{
 		}
 		return charCount;
 	}
-	
-	private void initconceptArray(int size) {
-		/* if empty string error message*/
+	*/
+	/*private void initconceptArray(int size) {
+		// if empty string error message
 		if (size == 0) {
 			JOptionPane.showMessageDialog(null, "Please Enter Some Text", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -205,10 +222,8 @@ public class Testing extends JPanel{
 		arrayString = Arrays.toString(conceptArray);
 		System.out.println(arrayString);
 	}
+	*/
 	
-	
-	
-
 }
 
 /*Testing

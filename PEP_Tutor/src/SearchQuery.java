@@ -54,7 +54,7 @@ public class SearchQuery extends JPanel {
 								b_search.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent e) {
 										search.Query(txt_Rgr.getText());
-										for(String text : search.output_text){
+										for(String text : search.getOutputText()){
 											output= output+"\n"+text+"\n";
 								        }
 										txt_rTe.setText(output);

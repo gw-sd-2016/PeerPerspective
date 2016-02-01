@@ -84,18 +84,18 @@ public class Menu extends JPanel{
         add(b_search);
      
         
-//TRAINING MODULE BUTTON
-        b_training = new JButton("Training Module");
-        b_training.setBounds(251, 49, 249, 50);
-        b_training.setFont(button_font);
-        b_training.setPreferredSize(new Dimension (BUTTON_WIDTH, BUTTON_HEIGHT));
-        b_training.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                container.add(new Training(container));
-                setVisible(false);
-            }
-        });
-        add(b_training);
+////TRAINING MODULE BUTTON
+//        b_training = new JButton("Training Module");
+//        b_training.setBounds(251, 49, 249, 50);
+//        b_training.setFont(button_font);
+//        b_training.setPreferredSize(new Dimension (BUTTON_WIDTH, BUTTON_HEIGHT));
+//        b_training.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                container.add(new Training(container));
+//                setVisible(false);
+//            }
+//        });
+//        add(b_training);
 //REVIEW BUTTON
         b_review = new JButton("Review");
         b_review.setPreferredSize(new Dimension(300, 50));

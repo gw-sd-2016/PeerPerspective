@@ -20,7 +20,7 @@ public class JmathtexTest extends JFrame implements ActionListener {
 	protected JLabel formulaLabel = new JLabel("Type formula below :");
 	protected JTextArea textArea = new JTextArea(5, 20);
 	protected JScrollPane scrollPanelForText = new JScrollPane(textArea);
-	protected JButton displayFormula = new JButton("Display Step by Step");
+	protected JButton displayFormula = new JButton("Display ");
 	JLabel emptyLabel = new JLabel("");
 	JPanel inputPanel = new JPanel();
 	public Problem prob = new Problem();
@@ -136,35 +136,70 @@ public class JmathtexTest extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if ("display".equals(e.getActionCommand())) {
-			//createProblem();
-			String latex = textArea.getText();
-			System.out.println(latex);
-			String lines[] = latex.split("\\r?\\n");
-			for(int i = 0; i < lines.length; i++){
+			createProblem();
+//			String latex = textArea.getText();
+//			System.out.println(latex);
+//			latex = latex.replace('×', '*');
+//			latex = latex.replace('?', '=');
+//			String lines[] = latex.split("\\r?\\n");
+//			for(int i = 0; i < lines.length; i++){
+//
+//				TeXFormula formula = new TeXFormula(lines[i]);
+//				TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 20);
+//				icon.setInsets(new Insets(5, 5, 5, 5));
+//				BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+//
+//				Graphics2D g2 = image.createGraphics();
+//				g2.setColor(Color.white);
+//				g2.fillRect(0, 0, icon.getIconWidth(), icon.getIconHeight());
+//				JLabel jl = new JLabel();
+//				jl.setPreferredSize(new Dimension(355, 355));
+//				jl.setForeground(new Color(0, 0, 0));
+//				icon.paintIcon(jl, g2, 0, 0);
+//
+//
+//				// now draw it to the screen			
+//				Graphics g = this.emptyLabel.getGraphics();
+//				g.drawImage(image, x, y*i, null);
 
-				TeXFormula formula = new TeXFormula(lines[i]);
-				TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 20);
-				icon.setInsets(new Insets(5, 5, 5, 5));
-				BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-
-				Graphics2D g2 = image.createGraphics();
-				g2.setColor(Color.white);
-				g2.fillRect(0, 0, icon.getIconWidth(), icon.getIconHeight());
-				JLabel jl = new JLabel();
-				jl.setPreferredSize(new Dimension(355, 355));
-				jl.setForeground(new Color(0, 0, 0));
-				icon.paintIcon(jl, g2, 0, 0);
-
-
-				// now draw it to the screen			
-				Graphics g = this.emptyLabel.getGraphics();
-				g.drawImage(image, x, y*i, null);
-
-			}
+//			}
 		}
 
 	}
 }
+
+/*
+ * 
+Evaluate 6 x^2-2 x^2 where x?2:
+6 x^2-2 x^2 ? 6×2^2-2×2^2
+2^2?4:
+6×4-2×2^2
+2^2?4:
+6×4-2×4
+6×4 ? 24:
+24-2×4
+-2×4 ? -8:
+24+-8
+ | 1 | 14
+ | 2 | 4
+- |  | 8
+ | 1 | 6:
+Answer: |  
+ | 16
+
+ */
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 Evaluate x^2+2 (x+7)-19 where x = 7:

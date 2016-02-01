@@ -42,8 +42,7 @@ public class Testing extends JPanel{
 	private JButton b_start;
 	private JButton b_done;
 	private String readText;
-	private ArrayList<String> prob = SearchQuery.search.output_text;
-	
+	private WolframAlpha output = new WolframAlpha();
 	private String[] conceptArray;
 	private int[][] problemInfo;
 

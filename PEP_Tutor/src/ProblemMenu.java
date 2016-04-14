@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.awt.image.BufferedImage;
 import be.ugent.caagt.jmathtex.TeXConstants;
 import be.ugent.caagt.jmathtex.TeXFormula;
@@ -25,6 +26,7 @@ public class ProblemMenu extends JFrame implements ActionListener {
 	JLabel emptyLabel = new JLabel("");
 	JPanel inputPanel = new JPanel();
 	private Problem prob = new Problem();
+	public int probType = 0;
 	private int lvl = 0;
 	private static int sWidth;
 	private static int sHeight;
@@ -32,12 +34,28 @@ public class ProblemMenu extends JFrame implements ActionListener {
 	int x = 10;
 	private WolframAlpha search = new WolframAlpha();
 	private ArrayList<String> text = new ArrayList<String>();
+	private ArrayList<String> wrongText = new ArrayList<String>();
+	private ArrayList<String> outText = new ArrayList<String>();
 	private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	private JLabel solveProb = new JLabel();
-	private final JRadioButton answer_1 = new JRadioButton("New radio button");
-	private final JRadioButton answer_2 = new JRadioButton("New radio button");
-	private final JRadioButton answer_3 = new JRadioButton("New radio button");
-	private final JRadioButton answer_4 = new JRadioButton("New radio button");
+	private final JRadioButton answer_1 = new JRadioButton("", null);
+	private final JRadioButton answer_2 = new JRadioButton("", null);
+	private final JRadioButton answer_3 = new JRadioButton("", null);
+	private final JRadioButton answer_4 = new JRadioButton("", null);
+	private final JComboBox comboBox = new JComboBox();
+	private JLabel steps = new JLabel("");
+	private int levelTest = 1;
+	private int errorTracker;
+	private int counter = 0;
+	private String output = null;
+	private String error = null;
+	private ArrayList <Integer> errorLines = new ArrayList<Integer>();
+	private int selectError = 0;
+	private Random errorNumber = new Random();
+	private final JRadioButton radioButton = new JRadioButton("");
+	private final JRadioButton radioButton_1 = new JRadioButton("");
+	private final JRadioButton radioButton_2 = new JRadioButton("");
+	private final JRadioButton radioButton_3 = new JRadioButton("");
 	
 	
 	//protected String xmlString;
@@ -74,76 +92,126 @@ public class ProblemMenu extends JFrame implements ActionListener {
 
 		inputPanel.add(southPanel);
 		inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Beginner", "Intermediate", "Hard"}));
+		
+		JPanel panel = new JPanel();
+		
+		JButton btnShowSteps = new JButton("Show Steps");
+		btnShowSteps.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				drawSteps(outText);
+			}
+		});
+		
+
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(inputPanel, GroupLayout.PREFERRED_SIZE, 355, GroupLayout.PREFERRED_SIZE)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(10)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(inputPanel, GroupLayout.PREFERRED_SIZE, 355, GroupLayout.PREFERRED_SIZE)
+							.addGap(153)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnShowSteps)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap(110, Short.MAX_VALUE)
+							.addComponent(solveProb)
+							.addGap(493))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(73)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(answer_2)
+								.addComponent(answer_1)
+								.addComponent(answer_3)
+								.addComponent(answer_4))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(radioButton)
+								.addComponent(radioButton_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.addComponent(radioButton_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.addComponent(radioButton_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(solveProb)
-							.addGap(117))
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 688, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(449, Short.MAX_VALUE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(answer_1)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(answer_2)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(answer_3)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(answer_4)
-							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addComponent(emptyLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(50)
+							.addComponent(emptyLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(727))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(inputPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGap(21)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(inputPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(6)
-							.addComponent(solveProb))
+							.addContainerGap()
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnShowSteps)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(103)
-							.addComponent(answer_1)
-							.addGap(27)
-							.addComponent(answer_2)
-							.addGap(31)
-							.addComponent(answer_3)
-							.addGap(30)
-							.addComponent(answer_4))
+							.addComponent(solveProb)
+							.addGap(46)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(answer_1)
+								.addComponent(radioButton))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(answer_2)
+								.addComponent(radioButton_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(answer_3)
+								.addComponent(radioButton_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(answer_4)
+								.addComponent(radioButton_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+							.addGap(163))
 						.addComponent(emptyLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 		);
+		
+		
+		steps.setPreferredSize(new Dimension(355, 355));
+		panel.add(steps);
 		getContentPane().setLayout(groupLayout);
 
 		pack();
 		setVisible(true);
 	}
 
+
 	public static void main(String[] args) throws IOException, Exception {
 			//	TESTING 
 
 				//creating and showing this application's GUI.
 				ProblemMenu app = new ProblemMenu();
-				app.setSize(new Dimension (sWidth,sHeight));
+				app.setSize(new Dimension (sWidth-500,sHeight-500));
 				app.setVisible(true);
 				/* Create SnuggleEngine and new SnuggleSession 
 				 * SnuggleTeX is used as a converter to convert LaTeX to XML 
 				 */
-				SnuggleEngine engine = new SnuggleEngine();
-				SnuggleSession session = engine.createSession();
-		
-				/* Parse some very basic Math Mode input */
-				SnuggleInput input = new SnuggleInput("$$ x+2=3 $$");
-				session.parseInput(input);
-		
-				/* Convert the results to an XML String, which in this case will
-				 * be a single MathML <math>...</math> element. */
-				String xmlString = session.buildXMLString();
-				System.out.println("Input " + input.getString() + " was converted to:\n" + xmlString);
+//				SnuggleEngine engine = new SnuggleEngine();
+//				SnuggleSession session = engine.createSession();
+//		
+//				/* Parse some very basic Math Mode input */
+//				SnuggleInput input = new SnuggleInput("$$ x+2=3 $$");
+//				session.parseInput(input);
+//		
+//				/* Convert the results to an XML String, which in this case will
+//				 * be a single MathML <math>...</math> element. */
+//				String xmlString = session.buildXMLString();
+//				System.out.println("Input " + input.getString() + " was converted to:\n" + xmlString);
 				
 	}
 
@@ -153,10 +221,11 @@ public class ProblemMenu extends JFrame implements ActionListener {
 	
 	public void createProblem(){
 		//creates the problem based on level
+		outText.clear();
+		prob.setProb(probType);
 		String latex = prob.prob(lvl);
-		String output = null;
 		System.out.println(latex + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		
+		search.clearOutputText();
 		//gets the step by step solution thru wolframalpha
 		search.Query(latex);
 		
@@ -166,26 +235,72 @@ public class ProblemMenu extends JFrame implements ActionListener {
 		//makes a copy of the solution and from there replaces invalid characters
 		output = text.get(2);
 		System.out.println("OUTPUT  ");
-		System.out.println(output);
 		output = output.replace('×', '*');
 		output = output.replace('', '=');
 		String lines[] = output.split("\\r?\\n");
+		for(int i = 0; i < lines.length; i++){
+			System.out.println("");
+			System.out.println("Line "+i+": "+ lines[i]);
+			
+		}
+		System.out.println("");
+		System.out.println("");
 		//System.out.println("#####################################################################################");
+		ArrayList<String> targetLines = new ArrayList<String>(); 
+		//TEST Traversal to produce error
+		for(int i = 0; i < lines.length; i++){
+			if(i!=0 && lines[i].endsWith(":") && i != lines.length-3 && lines[i].indexOf('|')<0 && !lines[i].contains("x")){
+				//THIS CAN BE PUT INTO A METHOD
+				String stepMove = lines[i-1];
+				System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+				System.out.println("TARGETTED LINES Line i = "+i+": "+stepMove);
+				if(stepMove.indexOf('*')>= 0)
+					stepMove = lines[i-1].replace('*', '+');
+				else if(stepMove.indexOf('+')>= 0)
+					stepMove = lines[i-1].replace('+', '*');
+				else if(stepMove.indexOf('-')>= 0)
+					stepMove = lines[i-1].replace('-', '+');
+				if(stepMove.indexOf('=')>= 0)
+					stepMove = stepMove.substring(stepMove.indexOf('=')+1, stepMove.length() );
+				System.out.println("ALTERED LINES: "+stepMove);
+				targetLines.add(stepMove);
+				errorLines.add(i);
+			}
+			outText.add(lines[i]);
+		}
+		search.clearOutputText();
+		selectError = errorNumber.nextInt(((targetLines.size()-1)-0)+1)+0;
+		System.out.println("array size:"+ targetLines.size()+ " Line:"+ selectError + " Error Line starts: " + errorLines.get(selectError));
+		search.Query(targetLines.get(selectError));
+		wrongText = search.getOutputText(); 
 		
 		//prints the steps
 		for(int i = 0; i< lines.length; i++){
 			//output= output+"\n"+text.get(i)+"\n";
-			System.out.println("=============================================================================");
+			
+			//System.out.println("=============================================================================");
 			lines[i] = lines[i].replace('×', '*');
 			lines[i] = lines[i].replace('', '=');
+			if(i != 0 && i < lines.length-3){
+				lines[i] = lines[i].replaceAll(":", "=>");
+			}
 			//lines[i] = lines[i].replace(lines[0].charAt(lines.length-3), '=');
-			System.out.println(lines[i]);
+			//System.out.println(lines[i]);
         }
 		System.out.println("HOW MANY IMAGES ARE IN ARRAY " + images.size());
 		images.clear();
+		
+		
+		//creates the images using the Jmathtex
 		for(int i = 0; i < lines.length; i++){
 			//Convert the problem into an image to be solved
-			images.add(createIcon(lines[i]));
+		
+			if(lines[i].endsWith("=>") && i != 0){
+				images.add(createIcon(lines[i]+lines[i+1]));
+				i++;
+			}	
+			else
+				images.add(createIcon(lines[i]));
 			y = y*i;
 			
 //			TeXFormula formula = new TeXFormula(lines[i]);
@@ -207,10 +322,13 @@ public class ProblemMenu extends JFrame implements ActionListener {
 //			g.drawImage(image, x, y*i, null);
 		}
 		solveProb.setIcon(new ImageIcon(images.get(0)));
-		answer_1.setIcon(new ImageIcon(images.get(1)));
-		answer_2.setIcon(new ImageIcon(images.get(2)));
-		answer_3.setIcon(new ImageIcon(images.get(3)));
+		answer_1.setIcon(new ImageIcon(images.get(1+counter)));
+		answer_2.setIcon(new ImageIcon(images.get(2+counter)));
+		answer_3.setIcon(new ImageIcon(images.get(3+counter)));
 		answer_4.setIcon(new ImageIcon(images.get(images.size()-1)));
+		counter++;
+
+		//drawSteps(outText);
 		
 	}
 	public BufferedImage createIcon(String prob) {
@@ -229,17 +347,47 @@ public class ProblemMenu extends JFrame implements ActionListener {
 		return image;
 		
 	}
-	
+
+	public void drawSteps(ArrayList <String> prob){
+		//replaces the instance every time it goes thru the loop need to reorganize so it draws it all at once instead of twice
+		for(int i = 0; i < prob.size(); i++){
+			BufferedImage txtImage = createIcon(prob.get(i));
+			Graphics g = this.steps.getGraphics();
+			g.drawImage(txtImage, x, 30*i, null);
+		}
+	}
 	public void drawImage(BufferedImage image, JLabel p){
 		
 		Graphics g = p.getGraphics();
 		g.drawImage(image, x, y, null);
 	}
 
+    public void paintComponent(Graphics g) {
+        super.paintComponents(g);
+        drawSteps(outText); 
+    }
 
+	
 	public void actionPerformed(ActionEvent e) {
 		if ("display".equals(e.getActionCommand())) {
 			createProblem();
+			//drawSteps();
+			/*String level = (String)comboBox.getSelectedItem();
+			if(level.equals("Beginner")){
+				lvl = 1;
+			}
+			if(level.equals("Intermediate")){
+				lvl = 2;
+			}
+			if(level.equals("Hard")){
+				lvl = 3;
+			}*/
+			if(levelTest == 1 || levelTest == 2){
+				prob.setLevel(lvl++);
+				levelTest++;
+			}
+//			if(levelTest == 3)
+//				lvl = 0;
 			
 		}
 	}

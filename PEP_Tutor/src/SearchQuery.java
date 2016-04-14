@@ -25,7 +25,7 @@ public class SearchQuery extends JPanel {
 	private JButton b_back;
 	private JButton b_search;
 	private String output = "";
-	public static WolframAlpha search = new WolframAlpha();
+	private WolframAlpha search = new WolframAlpha();
 	
 	
 	public SearchQuery(JPanel cont) {

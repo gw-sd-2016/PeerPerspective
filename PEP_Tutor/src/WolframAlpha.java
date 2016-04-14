@@ -95,7 +95,9 @@ public class WolframAlpha {
 	public ArrayList<String> getOutputText(){
 		return output_text;
 	}
-
+	public void clearOutputText(){
+		output_text.clear();	
+	}
 	public static void main(String[] args) {
 
 		//WolframAlpha test = new WolframAlpha();

@@ -3,6 +3,44 @@ import java.math.RoundingMode;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+
+/*	Log of Issues with the new project
+ * 
+ *  1) Code Design 
+ *  	New project started off with me just trying stuff in a single class with large methods (trial and error)
+ *  	Time constraints made it harder to break the single class into multiple classes for each topic
+ *  	Sloppy code made it just that much harder when fixing one thing
+ *  2) Wolfram Alpha & JMathTex
+ *  	Relying on Wolfram Alpha from prior project which used it as a search engine for students to type in a problem or topic they want to study.
+ *  	Instead of making my own parser due to time. Since I would get both sentences and math expressions from wolfram it conflicted with JMathTex 
+ *  	since not all of the symbols were recognized. Not all queries for wolfram alpha have solutions which causes crashes ex: 1/4 (1/7×((1/8)/3)/3)
+ *	3) Project Idea 
+ *		Compared to last semester where we had 1-2 month to refine project ideas, this project idea was a work in progress
+ *		along with the code at the same time. The first project idea was simply make a random problem generator for students. Not knowing 
+ *		the audience I would try to target I switched back and forth from trying to see if I should target older students(High school+) 
+ *		or if I should target younger students(elementary). I judged that I could worry about that later but it became a bigger issue later on.
+ *		It was only around half into the semester when I started to work on the problem design that I realized working on high level math would
+ *		be too complicated especially without my own parser. 
+ *	4) Problem Design 
+ *		I wanted to see what was possible so I restricted myself to one type of problem polynomials. The plan with polynomials was to change the operations
+ *		in the problems then send the NEW expression back to wolfram to get incorrect solution. I wanted to have all the problems be generalized 
+ *		that way I could alter them even if they were different types. Issue with that is since they are different types it's pretty hard to generalize.
+ *		Thus what I had for polynomials couldn't be used for other topics. I can't change the operations of fractions or decimals and just send it in to wolfram to get something incorrect in the second query.
+ * 	5) Topics
+ * 		Since I couldn't just have polynomials, I ended up finding fractions and decimals as potential topics. 
+ * 		Which I then looked up actual misconceptions students have with these topics. In doing so I realized
+ * 		I needed to build my own parser but time constraints hence I build a mini parser that takes in the expression and applies a misconception.
+ *  6) Time
+ *  	Not knowing what to prioritize I tried to work on all the topics which made it so parts of them work and other parts don't work.
+ * 
+ * 	WHICH IS WHERE I AM NOW
+ * 
+ * 
+ */
+
+
+
+
 public class Problem {
 	private int level;
 	private int correct;
@@ -87,15 +125,14 @@ public class Problem {
 		return prob;
 	}
 	public String fraction(int x, int x1, int y, int y1, String opera, String ep){
-		//THIS IS TEST METHOD SO YOU HAVE TO MOVE BACK TO MAIN CLASS 
-		//NOTE THE VARIABLES HAVE TO BE PUBLIC AFTER BEING MOVED
 
 		//expressions for the faulty logic getting stored two different instances 
 		//exp is for the expression 
 		//exp1 is evaluated expression
 		String exp, exp1 = null;
 		int faultLogic1, faultLogic2, fault;
-		if(opera.equals("+") || opera.equals("-")){
+		float chance = r.nextFloat();
+		if((opera.equals("+") || opera.equals("-")) && chance <= 0.50f ){
 			//addition/subtraction logic fault
 			System.out.println("Original Expression: "+ x +"/" + x1 +" + " + y +"/" + y1);
 			exp = "(" +x + " "+opera+" "+ y + ") / " + "(" +x1 + " "+opera+" " + y1 + ")";
@@ -112,7 +149,7 @@ public class Problem {
 			}	
 			exp1 = faultLogic1 + " / " + faultLogic2;
 		}
-		/*if (opera.equals("+") || opera.equals("-")){
+		else if (opera.equals("+") || opera.equals("-")){
 			//addition/subtraction logic fault
 			exp = "(" +x + " "+opera+" "+ y + ") / " + "(" +x1 + " * " + y1 + ")";
 			//Logic being carried out 
@@ -126,8 +163,8 @@ public class Problem {
 			}	
 			exp1 = faultLogic1 + " / " + faultLogic2;
 		}
-		 */
-		if(opera.equals("*") || opera.equals("/")){
+		 
+		if((opera.equals("*") || opera.equals("/")) && chance <= 0.50f){
 			System.out.println("Original Expression: "+ x +"/" + x1 +" "+opera +" " + y +"/" + y1);
 			fault = x1*y1;
 
@@ -143,6 +180,25 @@ public class Problem {
 				System.out.println("Logic Fault (Division): "+exp);
 				faultLogic1 = x*y;
 				faultLogic2 = x1*y1;
+			}	
+			exp1 = faultLogic1 + " / " + faultLogic2;
+		}
+		else if(opera.equals("*") || opera.equals("/")){
+			System.out.println("Original Expression: "+ x +"/" + x1 +" "+opera +" " + y +"/" + y1);
+			fault = x1*y1;
+
+			//Logic being carried out 
+			if(opera.equals("*")){
+				exp = "(" +x + " "+opera+" "+ y + ") / " + "(" +x1 + " "+opera+" " + y1 + ")";
+				System.out.println("Logic Fault (Multiplication): "+exp);
+				faultLogic1 = x*y1;
+				faultLogic2 = x1*y;
+			}
+			else{
+				exp = "(" +x + " * "+ y + ") / " + "(" +x1 + " * " + y1 + ")";
+				System.out.println("Logic Fault (Division): "+exp);
+				faultLogic1 = x/y;
+				faultLogic2 = x1/y1;
 			}	
 			exp1 = faultLogic1 + " / " + faultLogic2;
 		}
